@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -41,10 +42,15 @@ public class TaskBotServiceImpl {
         }
         String[] parsedMessage = messageText.split(" ");
         String replyText = "";
-        if(parsedMessage.length == 1 && parsedMessage[0].matches(PHONE_NO_REGEX)){
+        if(parsedMessage.length == 0){
+            return;
+        }
+        String taskKey = parsedMessage[0];
+        String restOfMessage = Arrays.stream(parsedMessage).skip(1).reduce("", (fm, sm)-> fm+" "+sm);
+        if(parsedMessage.length == 1 && taskKey.matches(PHONE_NO_REGEX)){
             replyText = getWhatsAppMeLink(parsedMessage[0]);
         }else if(parsedMessage[0].equalsIgnoreCase("reply")){
-            replyText = "replied to message: " + parsedMessage[1];
+            replyText = "replied to message: " + restOfMessage;
         }else{
             replyText = "UNSUPPORTED TASK IN CURRENT IMPLEMENTATION";
         }
