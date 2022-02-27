@@ -39,7 +39,7 @@ public class TaskBotScheduledServiceImpl {
     private void sendMorningAffirmations(){
         String greetingsText = "Good Morning Chandru, Wake up and shine!!! \n";
         String quoteForTheDay = getQuote();
-        //TODO: issue with parse mode
+        //TODO: issue with parse mode so currently using unformatted message.
         String messageText = greetingsText + quoteForTheDay; //getHTMLFormattedText(greetingsText, "header") + quoteForTheDay;
         taskBotService.sendMessage(messageText, normieNameChatId, -1, null);
     }
@@ -55,7 +55,7 @@ public class TaskBotScheduledServiceImpl {
         if(StringUtils.isEmpty(author)){
             author = "Anonymous";
         }
-        String quoteText = String.format("%1s \n, ~ %2s", quote, author);
+        String quoteText = String.format("%1s \n\n ~ %2s", quote, author);
                 //getHTMLFormattedText(quote, "quote"),
                 //getHTMLFormattedText(author, "author"));
         this.previousDayQuoteId = randomInteger;
