@@ -35,7 +35,7 @@ public class TaskBotScheduledServiceImpl {
 
     private int previousDayQuoteId = 0;
 
-    @Scheduled(cron = "0 0 7 * * *")
+    @Scheduled(cron = "0 30 1 * * *")
     private void sendMorningAffirmations(){
         String greetingsText = "Good Morning Chandru, Wake up and shine!!! \n";
         String quoteForTheDay = getQuote();
