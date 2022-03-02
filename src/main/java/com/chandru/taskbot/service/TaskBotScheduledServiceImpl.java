@@ -37,11 +37,10 @@ public class TaskBotScheduledServiceImpl {
 
     @Scheduled(cron = "0 30 1 * * *")
     private void sendMorningAffirmations(){
-        String greetingsText = "Good Morning Chandru, Wake up and shine!!! \n";
+        String greetingsText = "Good Morning Chandru, Wake up and shine!!! \n\n";
         String quoteForTheDay = getQuote();
-        //TODO: issue with parse mode so currently using unformatted message.
-        String messageText = greetingsText + quoteForTheDay; //getHTMLFormattedText(greetingsText, "header") + quoteForTheDay;
-        taskBotService.sendMessage(messageText, normieNameChatId, -1, null);
+        String messageText = getHTMLFormattedText(greetingsText, "header") + quoteForTheDay;
+        taskBotService.sendMessage(messageText, normieNameChatId, -1, ParseMode.HTML);
     }
 
     private String getQuote() {
@@ -55,9 +54,9 @@ public class TaskBotScheduledServiceImpl {
         if(StringUtils.isEmpty(author)){
             author = "Anonymous";
         }
-        String quoteText = String.format("%1s \n\n ~ %2s", quote, author);
-                //getHTMLFormattedText(quote, "quote"),
-                //getHTMLFormattedText(author, "author"));
+        String quoteText = String.format("%1s \n\n ~ %2s",
+                getHTMLFormattedText(quote, "quote"),
+                getHTMLFormattedText(author, "author"));
         this.previousDayQuoteId = randomInteger;
         return quoteText;
     }
@@ -65,11 +64,11 @@ public class TaskBotScheduledServiceImpl {
     public String getHTMLFormattedText(String text, String formatType){
         switch (formatType){
             case "header":
-                return String.format("<h2 style=\"color: #5e9ca0;\">%s</h2>", text);
+                return String.format("<b>%s</b>", text);
             case "quote":
-                return String.format("<pre><strong>%s</strong></pre>", text);
+                return String.format("<code>%s</code>", text);
             case "author":
-                return String.format("<em>%s</em>", text);
+                return String.format("<em><u>%s</u></em>", text);
             default:
                 return text;
         }
